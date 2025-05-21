@@ -55,23 +55,6 @@ npm run dev:all
 
 This will run both the React frontend and Node.js backend concurrently.
 
-## Project Structure
-
-```
-├── server/                 # Backend code
-│   ├── controllers/        # Request handlers
-│   ├── models/             # Database models
-│   ├── routes/             # API routes
-│   ├── middleware/         # Custom middleware
-│   └── index.js            # Server entry point
-├── src/                    # Frontend code
-│   ├── components/         # React components
-│   ├── contexts/           # React contexts
-│   ├── pages/              # Page components
-│   └── App.tsx             # Main App component
-└── package.json            # Project dependencies
-```
-
 ## API Endpoints
 
 ### Auth
