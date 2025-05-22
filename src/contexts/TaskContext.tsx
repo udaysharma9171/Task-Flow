@@ -60,7 +60,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     
     try {
       const response = await axios.get(
-        'import.meta.env.VITE_API_URL/api/tasks',
+        `${import.meta.env.VITE_API_URL}/api/tasks`,
         getAxiosConfig()
       );
       setTasks(response.data);
@@ -84,7 +84,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     
     try {
       const response = await axios.post(
-        'import.meta.env.VITE_API_URL/api/tasks',
+        `${import.meta.env.VITE_API_URL}/api/tasks`,
         taskData,
         getAxiosConfig()
       );
@@ -109,7 +109,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     
     try {
       const response = await axios.put(
-        `import.meta.env.VITE_API_URL/api/tasks/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
         taskData,
         getAxiosConfig()
       );
@@ -137,7 +137,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     
     try {
       await axios.delete(
-        `import.meta.env.VITE_API_URL/api/tasks/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
         getAxiosConfig()
       );
       
