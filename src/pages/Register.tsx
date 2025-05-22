@@ -52,7 +52,6 @@ const Register: React.FC = () => {
       await register(name, email, password);
       navigate('/');
     } catch (err) {
-      // Error is handled in the context
     }
   };
 
