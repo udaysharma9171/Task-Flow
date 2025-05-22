@@ -8,12 +8,16 @@ import taskRoutes from './routes/taskRoutes.js';
 // Load environment variables
 dotenv.config();
 
-// Create Express app
+// Create Express app 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://task-manager-frontend.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
 // Routes
@@ -35,4 +39,5 @@ mongoose.connect(process.env.MONGODB_URI)
   })
   .catch((error) => {
     console.error('MongoDB connection error:', error);
+    process.exit(1); // Exit on connection failure
   });
