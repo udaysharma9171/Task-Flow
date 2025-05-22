@@ -11,11 +11,11 @@ const TaskList: React.FC = () => {
   const [sortField, setSortField] = useState<'createdAt' | 'dueDate' | 'priority'>('createdAt');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  // Filter and sort tasks
+ 
   const filteredTasks = useMemo(() => {
     let filtered = [...tasks];
     
-    // Apply search filter
+   
     if (searchTerm) {
       filtered = filtered.filter(task => 
         task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -23,24 +23,24 @@ const TaskList: React.FC = () => {
       );
     }
     
-    // Apply status filter
+  
     if (statusFilter !== 'all') {
       filtered = filtered.filter(task => task.status === statusFilter);
     }
     
-    // Apply priority filter
+    
     if (priorityFilter !== 'all') {
       filtered = filtered.filter(task => task.priority === priorityFilter);
     }
     
-    // Apply sorting
+    
     filtered.sort((a, b) => {
       if (sortField === 'createdAt') {
         return sortDirection === 'asc' 
           ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
           : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       } else if (sortField === 'dueDate') {
-        // Handle tasks without due dates
+       
         if (!a.dueDate) return sortDirection === 'asc' ? 1 : -1;
         if (!b.dueDate) return sortDirection === 'asc' ? -1 : 1;
         

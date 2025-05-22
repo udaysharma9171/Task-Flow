@@ -1,17 +1,25 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { TaskProvider } from './contexts/TaskContext';
-import Navbar from './components/layout/Navbar';
-import ProtectedRoute from './components/layout/ProtectedRoute';
-import { Toaster } from 'react-hot-toast';
+import React, { Suspense, lazy } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import { TaskProvider } from "./contexts/TaskContext";
+import Navbar from "./components/layout/Navbar";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
-// Lazy load components
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Login = lazy(() => import('./pages/Login'));
-const Register = lazy(() => import('./pages/Register'));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
 
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
   state = { hasError: false };
 
   static getDerivedStateFromError() {
@@ -19,7 +27,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught in ErrorBoundary:', error, errorInfo);
+    console.error("Error caught in ErrorBoundary:", error, errorInfo);
   }
 
   render() {
@@ -27,7 +35,9 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-red-600">Something went wrong.</h1>
+            <h1 className="text-2xl font-bold text-red-600">
+              Something went wrong.
+            </h1>
             <button
               onClick={() => window.location.reload()}
               className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
@@ -72,13 +82,13 @@ const AppContent = () => {
         toastOptions={{
           duration: 3000,
           style: {
-            background: '#333',
-            color: '#fff',
+            background: "#333",
+            color: "#fff",
           },
         }}
       />
 
-      {!['/login', '/register'].includes(location.pathname) && <Navbar />}
+      {!["/login", "/register"].includes(location.pathname) && <Navbar />}
 
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Suspense fallback={<AppLoading />}>
@@ -98,7 +108,7 @@ const AppContent = () => {
         </Suspense>
       </main>
 
-      {!['/login', '/register'].includes(location.pathname) && (
+      {!["/login", "/register"].includes(location.pathname) && (
         <footer className="bg-gray-800 text-white py-4">
           <div className="container mx-auto text-center">
             <p>&copy; {new Date().getFullYear()} Task Manager</p>

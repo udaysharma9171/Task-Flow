@@ -15,7 +15,7 @@ const TaskDashboard: React.FC = () => {
     const inProgress = tasks.filter(task => task.status === 'in-progress').length;
     const highPriority = tasks.filter(task => task.priority === 'high').length;
     
-    // Calculate overdue tasks
+    // logic for overdue tasks
     const overdue = tasks.filter(task => {
       if (!task.dueDate || task.status === 'completed') return false;
       return new Date(task.dueDate) < new Date();
@@ -155,7 +155,7 @@ interface RecentTaskItemProps {
 }
 
 const RecentTaskItem: React.FC<RecentTaskItemProps> = ({ task }) => {
-  // Status styling
+  
   const statusStyles = {
     pending: 'bg-gray-100 text-gray-800',
     'in-progress': 'bg-amber-100 text-amber-800',

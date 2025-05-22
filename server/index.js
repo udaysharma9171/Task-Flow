@@ -8,7 +8,6 @@ import taskRoutes from './routes/taskRoutes.js';
 
 dotenv.config();
 
-// Create Express app 
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -20,16 +19,16 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Routes
+
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 
-// Health check route
+
 app.get('/', (req, res) => {
   res.send('Task Manager API is running...');
 });
 
-// Connect to MongoDB
+// mongo db connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');

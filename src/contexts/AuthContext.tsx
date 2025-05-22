@@ -37,7 +37,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Check if user is already logged in
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -55,20 +54,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         email, 
         password 
       });
-      
+
       const userData = response.data;
       
-      // Save user to local storage
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
-      return true; // Return success status
+      return true; 
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || 'An error occurred during login');
       } else {
         setError('An error occurred during login');
       }
-      return false; // Return failure status
+      return false;
     } finally {
       setLoading(false);
     }
@@ -88,7 +86,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       const userData = response.data;
       
-      // Save user to local storage
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       return true;
@@ -108,7 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('user');
     setUser(null);
-    navigate('/login'); // Redirect to login page after logout
+    navigate('/login'); 
   };
 
   return (

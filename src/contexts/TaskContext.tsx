@@ -1,13 +1,19 @@
-import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import axios from 'axios';
-import { useAuth } from './AuthContext';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+} from "react";
+import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 export interface Task {
   _id: string;
   title: string;
   description: string;
-  status: 'pending' | 'in-progress' | 'completed';
-  priority: 'low' | 'medium' | 'high';
+  status: "pending" | "in-progress" | "completed";
+  priority: "low" | "medium" | "high";
   dueDate?: string;
   createdAt: string;
 }
@@ -42,7 +48,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  // Setup axios config with authorization
   const getAxiosConfig = useCallback(() => {
     return {
       headers: {
@@ -54,10 +59,10 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   // Fetch all tasks
   const getTasks = useCallback(async () => {
     if (!user) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/tasks`,
@@ -66,9 +71,9 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       setTasks(response.data);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || 'Error fetching tasks');
+        setError(err.response.data.message || "Error fetching tasks");
       } else {
-        setError('Error fetching tasks');
+        setError("Error fetching tasks");
       }
     } finally {
       setLoading(false);
@@ -78,10 +83,10 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   // Create a new task
   const createTask = async (taskData: Partial<Task>) => {
     if (!user) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/tasks`,
@@ -91,9 +96,9 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
       setTasks([response.data, ...tasks]);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || 'Error creating task');
+        setError(err.response.data.message || "Error creating task");
       } else {
-        setError('Error creating task');
+        setError("Error creating task");
       }
     } finally {
       setLoading(false);
@@ -103,25 +108,23 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   // Update a task
   const updateTask = async (id: string, taskData: Partial<Task>) => {
     if (!user) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
         taskData,
         getAxiosConfig()
       );
-      
-      setTasks(
-        tasks.map((task) => (task._id === id ? response.data : task))
-      );
+
+      setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || 'Error updating task');
+        setError(err.response.data.message || "Error updating task");
       } else {
-        setError('Error updating task');
+        setError("Error updating task");
       }
     } finally {
       setLoading(false);
@@ -131,22 +134,22 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   // Delete a task
   const deleteTask = async (id: string) => {
     if (!user) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
         getAxiosConfig()
       );
-      
+
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || 'Error deleting task');
+        setError(err.response.data.message || "Error deleting task");
       } else {
-        setError('Error deleting task');
+        setError("Error deleting task");
       }
     } finally {
       setLoading(false);

@@ -41,14 +41,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     setIsEditing(false);
   };
 
-  // Priority colors
   const priorityColors = {
     low: 'bg-blue-100 text-blue-800',
     medium: 'bg-amber-100 text-amber-800',
     high: 'bg-rose-100 text-rose-800',
   };
 
-  // Status colors
+ 
   const statusColors = {
     pending: 'bg-gray-100 text-gray-800',
     'in-progress': 'bg-purple-100 text-purple-800',

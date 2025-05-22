@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx" // This is critical for React 17+ JSX Transform
+    "jsx": "react-jsx" 
   },
   "include": ["src"],
   "exclude": ["node_modules", "server"]
