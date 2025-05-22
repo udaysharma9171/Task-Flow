@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 
-// Load environment variables
+
 dotenv.config();
 
 // Create Express app 
@@ -39,5 +39,5 @@ mongoose.connect(process.env.MONGODB_URI)
   })
   .catch((error) => {
     console.error('MongoDB connection error:', error);
-    process.exit(1); // Exit on connection failure
+    process.exit(1); 
   });
