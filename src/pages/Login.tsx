@@ -10,6 +10,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [successMessage, setSuccessMessage] = useState('');
   
   const { login, loading, error } = useAuth();
   const navigate = useNavigate();
@@ -19,10 +20,14 @@ const Login: React.FC = () => {
     
     if (!email.trim()) {
       newErrors.email = 'Email is required';
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      newErrors.email = 'Email is invalid';
     }
     
     if (!password) {
       newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
     
     setErrors(newErrors);
@@ -32,13 +37,20 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    setSuccessMessage(''); // Clear previous success messages
+    
     if (!validate()) return;
     
     try {
-      await login(email, password);
-      navigate('/');
+      const loginSuccess = await login(email, password);
+      if (loginSuccess) {
+        setSuccessMessage('Login successful! Redirecting...');
+        // Small delay to show success message before redirect
+        setTimeout(() => navigate('/'), 1000);
+      }
     } catch (err) {
-      // Error is handled in the context
+      // Error is already handled in the context
+      console.error('Login error:', err);
     }
   };
 
@@ -60,6 +72,13 @@ const Login: React.FC = () => {
               <div className="mb-4 p-3 bg-rose-50 text-rose-700 rounded-md flex items-center">
                 <AlertCircle className="h-5 w-5 mr-2" />
                 <span>{error}</span>
+              </div>
+            )}
+            
+            {successMessage && (
+              <div className="mb-4 p-3 bg-emerald-50 text-emerald-700 rounded-md flex items-center">
+                <CheckCircle2 className="h-5 w-5 mr-2" />
+                <span>{successMessage}</span>
               </div>
             )}
             
@@ -93,8 +112,9 @@ const Login: React.FC = () => {
                 isLoading={loading}
                 fullWidth
                 className="mt-6"
+                disabled={loading}
               >
-                Sign In
+                {loading ? 'Signing In...' : 'Sign In'}
               </Button>
             </form>
           </CardBody>

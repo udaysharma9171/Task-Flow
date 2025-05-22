@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
   _id: string;
@@ -12,8 +13,8 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -21,8 +22,8 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: false,
   error: null,
-  login: async () => {},
-  register: async () => {},
+  login: async () => false,
+  register: async () => false,
   logout: () => {},
 });
 
@@ -34,6 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // Check if user is already logged in
   useEffect(() => {
@@ -44,12 +46,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   // Login user
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
     
     try {
-      const response = await axios.post('import.meta.env.VITE_API_URL/api/users/login', { 
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, { 
         email, 
         password 
       });
@@ -59,24 +61,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Save user to local storage
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
+      return true; // Return success status
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || 'An error occurred during login');
       } else {
         setError('An error occurred during login');
       }
+      return false; // Return failure status
     } finally {
       setLoading(false);
     }
   };
 
   // Register user
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
     
     try {
-      const response = await axios.post('import.meta.env.VITE_API_URL/api/users/register', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, {
         name,
         email,
         password
@@ -87,12 +91,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Save user to local storage
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
+      return true;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || 'An error occurred during registration');
       } else {
         setError('An error occurred during registration');
       }
+      return false;
     } finally {
       setLoading(false);
     }
@@ -102,6 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('user');
     setUser(null);
+    navigate('/login'); // Redirect to login page after logout
   };
 
   return (
